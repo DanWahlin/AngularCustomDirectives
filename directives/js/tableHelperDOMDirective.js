@@ -2,6 +2,12 @@
 
   var app = angular.module('directivesModule');
 
+  var escaper = document.createElement('div');
+  function escapeHtml(str) {
+      escaper.appendChild(document.createTextNode(str));
+      return escaper.innerHTML;
+  };
+
   app.directive('tableHelperDom', function () {
       
       var template = '<div class="tableHelper"></div>',
@@ -58,7 +64,7 @@
                    if (val) {
                        //Track visible properties to make it fast to check them later
                        visibleProps.push(prop); 
-                       tr += '<th>' + val + '</th>'; 
+                       tr += '<th>' + escapeHtml(val) + '</th>';
                    }
                }
                tr += '</tr>';
@@ -73,7 +79,7 @@
                     var row = scope.datasource[i];
                     for (var prop in row) {
                         if (visibleProps.indexOf(prop) > -1) {
-                            rows += '<td>' + row[prop] + '</td>';
+                            rows += '<td>' + escapeHtml(row[prop]) + '</td>';
                         }
                     }
                     rows += '</tr>';
